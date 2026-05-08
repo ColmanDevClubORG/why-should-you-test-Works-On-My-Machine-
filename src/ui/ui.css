@@ -1,0 +1,105 @@
+.ui-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius);
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  border: 1px solid transparent;
+  outline: none;
+  font-family: inherit;
+}
+
+.ui-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Variants */
+.ui-button.primary {
+  background-color: var(--primary);
+  color: white;
+}
+
+.ui-button.primary:hover:not(:disabled) {
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.ui-button.secondary {
+  background-color: var(--bg-card);
+  color: var(--text-main);
+  border-color: var(--border);
+}
+
+.ui-button.secondary:hover:not(:disabled) {
+  background-color: var(--border);
+}
+
+.ui-button.outline {
+  background-color: transparent;
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.ui-button.outline:hover:not(:disabled) {
+  background-color: rgba(99, 102, 241, 0.1);
+}
+
+/* Sizes */
+.ui-button.sm {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.875rem;
+}
+
+.ui-button.md {
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+}
+
+.ui-button.lg {
+  padding: 0.8rem 1.6rem;
+  font-size: 1.125rem;
+}
+
+/* Input Styles */
+.ui-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.ui-input-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.ui-input {
+  background-color: var(--input-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.6rem 0.8rem;
+  color: var(--text-main);
+  font-family: inherit;
+  font-size: 1rem;
+  transition: var(--transition);
+  outline: none;
+}
+
+.ui-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+.ui-input.error {
+  border-color: #ef4444;
+}
+
+.ui-input-error {
+  font-size: 0.75rem;
+  color: #ef4444;
+}
