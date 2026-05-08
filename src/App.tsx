@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { Button, Input } from './ui';
 import { validationService } from './services/validationService';
+import { apiService } from './services/apiService';
 import './App.css';
 
 function App() {
@@ -8,10 +9,13 @@ function App() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const { validateEmail, validatePassword, isUsernameTaken } = useMemo(() => validationService(), []);
+  const { registerUser, logAnalytics } = useMemo(() => apiService(), []);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    logAnalytics('submit_clicked', { username });
     const newErrors: Record<string, string> = {};
 
     if (!username) {
@@ -35,7 +39,13 @@ function App() {
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      alert(`Success! User ${username} registered. (Tested behavior)`);
+      setIsLoading(true);
+      const result = await registerUser({ username, email, password });
+      setIsLoading(false);
+      
+      if (result.success) {
+        alert(`Success! User ${username} registered with ID: ${result.id}`);
+      }
     }
   };
 
@@ -93,8 +103,9 @@ function App() {
               <Button 
                 onClick={handleSubmit} 
                 style={{ marginTop: '0.5rem', width: '100%' }}
+                disabled={isLoading}
               >
-                Create Account
+                {isLoading ? 'Registering...' : 'Create Account'}
               </Button>
             </div>
           </div>
