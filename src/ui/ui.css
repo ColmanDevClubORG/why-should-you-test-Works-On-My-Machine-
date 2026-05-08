@@ -16,7 +16,6 @@
   cursor: not-allowed;
 }
 
-/* Variants */
 .ui-button.primary {
   background-color: var(--primary);
   color: white;
@@ -64,7 +63,6 @@
   font-size: 1.125rem;
 }
 
-/* Input Styles */
 .ui-input-container {
   display: flex;
   flex-direction: column;
