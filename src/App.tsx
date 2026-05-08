@@ -1,17 +1,41 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Button, Input } from './ui';
+import { validationService } from './services/validationService';
 import './App.css';
 
 function App() {
   const [username, setUsername] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const { validateEmail, validatePassword, isUsernameTaken } = useMemo(() => validationService(), []);
 
   const handleSubmit = () => {
+    const newErrors: Record<string, string> = {};
+
     if (!username) {
-      setError('Username is required');
-    } else {
-      setError('');
-      alert(`Welcome, ${username}! (This action should be tested)`);
+      newErrors.username = 'Username is required';
+    } else if (isUsernameTaken(username)) {
+      newErrors.username = 'This username is already taken';
+    }
+
+    if (!email) {
+      newErrors.email = 'Email is required';
+    } else if (!validateEmail(email)) {
+      newErrors.email = 'Please enter a valid email';
+    }
+
+    if (!password) {
+      newErrors.password = 'Password is required';
+    } else if (!validatePassword(password)) {
+      newErrors.password = 'Password must be 8+ chars with at least one number';
+    }
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      alert(`Success! User ${username} registered. (Tested behavior)`);
     }
   };
 
@@ -39,20 +63,40 @@ function App() {
           </div>
 
           <div className="component-demo">
-            <h2>Input Component</h2>
-            <Input 
-              label="Username" 
-              placeholder="Enter your name" 
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              error={error}
-            />
-            <Button 
-              onClick={handleSubmit} 
-              style={{ marginTop: '1rem', width: '100%' }}
-            >
-              Submit Form
-            </Button>
+            <h2>Registration Form</h2>
+            <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>
+              Try: "admin" as username, "invalid-email", or "123" as password.
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%' }}>
+              <Input 
+                label="Username" 
+                placeholder="Enter username" 
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                error={errors.username}
+              />
+              <Input 
+                label="Email" 
+                placeholder="Enter email" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                error={errors.email}
+              />
+              <Input 
+                label="Password" 
+                type="password"
+                placeholder="Enter password" 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                error={errors.password}
+              />
+              <Button 
+                onClick={handleSubmit} 
+                style={{ marginTop: '0.5rem', width: '100%' }}
+              >
+                Create Account
+              </Button>
+            </div>
           </div>
         </section>
 
