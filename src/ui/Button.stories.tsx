@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { expect, fn, userEvent, within } from '@storybook/test';
 import { Button } from './Button';
 
 const meta: Meta<typeof Button> = {
@@ -14,6 +15,9 @@ const meta: Meta<typeof Button> = {
       control: 'select',
       options: ['sm', 'md', 'lg'],
     },
+  },
+  args: {
+    onClick: fn(),
   },
 };
 
@@ -34,23 +38,15 @@ export const Secondary: Story = {
   },
 };
 
-export const Outline: Story = {
+export const InteractionTest: Story = {
   args: {
-    variant: 'outline',
-    children: 'Outline Button',
+    children: 'Click Me!',
   },
-};
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    const button = canvas.getByRole('button');
 
-export const Large: Story = {
-  args: {
-    size: 'lg',
-    children: 'Large Button',
-  },
-};
-
-export const Small: Story = {
-  args: {
-    size: 'sm',
-    children: 'Small Button',
+    await userEvent.click(button);
+    await expect(args.onClick).toHaveBeenCalled();
   },
 };

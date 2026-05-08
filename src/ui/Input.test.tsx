@@ -3,10 +3,9 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { Input } from './Input';
 
 describe('Input component', () => {
-  it('renders with a label', () => {
+  it('renders with a label and is linked correctly', () => {
     render(<Input label='Username' placeholder='Enter name' />);
-    expect(screen.getByText('Username')).toBeInTheDocument();
-    expect(screen.getByPlaceholderText('Enter name')).toBeInTheDocument();
+    expect(screen.getByLabelText('Username')).toBeInTheDocument();
   });
 
   it('allows the user to write into it', () => {
